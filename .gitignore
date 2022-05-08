@@ -45,3 +45,12 @@ gradle-app.setting
 *.lock
 *.bin
 .gradle/file-system.probe
+.gradle/7.3.3/checksums/checksums.lock
+.gradle/7.3.3/checksums/sha1-checksums.bin
+.gradle/7.3.3/executionHistory/executionHistory.lock
+.gradle/7.3.3/fileHashes/fileHashes.lock
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/file-system.probe
+.idea/compiler.xml
+.idea/gradle.xml
+.idea/misc.xml
