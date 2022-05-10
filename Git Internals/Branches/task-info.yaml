@@ -385,5 +385,8 @@ files:
   visible: false
   learner_created: false
 feedback_link: https://hyperskill.org/learn/step/9841#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Tue, 10 May 2022 21:18:14 UTC
 record: -1

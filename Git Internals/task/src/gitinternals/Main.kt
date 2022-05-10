@@ -8,24 +8,56 @@ import java.time.ZoneOffset
 import java.util.zip.InflaterInputStream
 
 fun main() {
-    println("Enter .git directory location:")
-    val gitDirectoryPath = readln()
-    println("Enter git object hash:")
-    val gitObjectsHash = readln()
-    val gitObjectFile = GitObjectInflater(gitDirectoryPath, gitObjectsHash)
-    gitObjectFile.inflateBlob()
+    val gitInflate = GitObjectInflater()
+    gitInflate.commandParser()
 }
 
-class GitObjectInflater(gitDirectory: String, objectHash: String) {
-    private var fileName: String
-
-    init {
-        this.fileName = "$gitDirectory/$objectFolderName/${objectHash.substring(0, 2)}/${objectHash.substring(2, )}"
-    }
+class GitObjectInflater {
+    lateinit var gitDirectory: String
+    lateinit var objectHash: String
+    lateinit var fileName: String
 
     companion object Property {
         const val objectFolderName = "objects"
         val propertyList = listOf("commit", "tree", "parent", "author", "committer" )
+    }
+
+    fun commandParser() {
+        println("Enter .git directory location:")
+        this.gitDirectory = readln()
+        println("Enter command:")
+        when(readln()) {
+            "cat-file" -> handleGitObjects()
+            "list-branches" -> handleBranches()
+        }
+    }
+
+    private fun handleBranches() {
+        val branchPath = "/refs/heads"
+        val headPath = "/HEAD"
+        val head = getHead("${this.gitDirectory}$headPath")
+        val branches = mutableListOf<String>()
+        File("${this.gitDirectory}$branchPath").walk().filter { it.isFile }.forEach { branches.add(it.name) }
+        branches.sort()
+
+        for (branch in branches) {
+            if(branch == head) {
+                println("* $branch")
+            } else {
+                println("  $branch")
+            }
+        }
+    }
+
+    private fun getHead(path: String): String {
+        return File(path).readLines().first().split("/").last()
+    }
+
+     private fun handleGitObjects() {
+        println("Enter git object hash:")
+        this.objectHash = readln()
+        this.fileName = "$gitDirectory/$objectFolderName/${objectHash.substring(0, 2)}/${objectHash.substring(2, )}"
+        this.handleCatFile()
     }
 
     private fun getDateTime(epochTime: String, offset: String): String {
@@ -37,13 +69,15 @@ class GitObjectInflater(gitDirectory: String, objectHash: String) {
         return "${localDateTime.toString().replace("T", " ")} $hrs:$min"
     }
 
-    fun inflateBlob() {
-        val file = File(this.fileName)
+    private fun inflateBlob(fileName: String): ByteArray {
+        val file = File(fileName)
         val fis = FileInputStream(file)
         val iis = InflaterInputStream(fis)
+        return iis.readAllBytes()!!
+    }
+    private fun handleCatFile() {
 
-
-        val gitByte = iis.readAllBytes()
+        val gitByte = inflateBlob(this.fileName)
         val gitString = gitByte.toString(Charsets.UTF_8).replace('\u0000', '\n').split("\n").filter { it.isNotBlank() }
         val gitHeader = gitString.first().trim().split(" ")
         gitString - gitString.first()
@@ -73,8 +107,6 @@ class GitObjectInflater(gitDirectory: String, objectHash: String) {
             }
         }
 
-        iis.close()
-        fis.close()
     }
     private fun printTreeData(gitString: String) {
         val linesOfTree = gitString.split(0.toChar())
