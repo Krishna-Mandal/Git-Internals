@@ -19,6 +19,9 @@ class GitObjectInflater {
 
     companion object Property {
         const val objectFolderName = "objects"
+        const val branchPath = "/refs/heads"
+        const val headPath = "/HEAD"
+        const val mergeString = " (merged)"
         val propertyList = listOf("commit", "tree", "parent", "author", "committer" )
     }
 
@@ -27,14 +30,55 @@ class GitObjectInflater {
         this.gitDirectory = readln()
         println("Enter command:")
         when(readln()) {
-            "cat-file" -> handleGitObjects()
+            "cat-file" -> {
+                handleUserInput()
+                handleCatFile()
+            }
             "list-branches" -> handleBranches()
+            "log" -> {
+                handleLog()
+            }
+
         }
     }
 
+    private fun handleLog() {
+        println("Enter branch name:")
+        val commitHash = File("${this.gitDirectory}$branchPath/${readln()}").readLines().first()
+        getCommitMessage(commitHash)
+    }
+
+    private fun getCommitMessage(hashValue: String, merged: Boolean = false) {
+        val parentHash: String? = hashValue
+        val hashPath = "$gitDirectory/$objectFolderName/${parentHash?.substring(0, 2)}/${parentHash?.substring(2, )}"
+        val gitByte = inflateBlob(hashPath)
+        val gitString = gitByte.toString(Charsets.UTF_8).replace('\u0000', '\n').split("\n").filter { it.isNotBlank() }
+        printCommitMessage(gitString, parentHash, merged)
+    }
+
+    private fun printCommitMessage(messages: List<String>, hashValue: String?, merged: Boolean = false) {
+        println("Commit: $hashValue${if (merged) mergeString else ""}")
+        val gitKeyValue = messages.map { it.trim() }.groupBy { it.split(" ").first()}
+        val(_, authName, authEmail, authTimeStamp, authOffset) = gitKeyValue["committer"]!!.first().split(" ")
+        println("$authName ${authEmail.replace("<", "").replace(">", "")} commit timestamp: ${getDateTime(authTimeStamp, authOffset)}")
+        gitKeyValue.filter { it.key !in propertyList }.forEach{
+            println(it.value.joinToString (separator = " "))
+        }
+        println()
+        if (gitKeyValue.containsKey("parent")) {
+            val parents = gitKeyValue["parent"]
+            if (parents?.size!! > 1 && !merged) {
+                val actualParentHash = parents.last().split("parent").last().trim()
+                getCommitMessage(actualParentHash, true)
+            }
+
+            if (!merged) {
+                val actualParentHash = parents.first().split("parent").last().trim()
+                getCommitMessage(actualParentHash)
+            }
+        }
+    }
     private fun handleBranches() {
-        val branchPath = "/refs/heads"
-        val headPath = "/HEAD"
         val head = getHead("${this.gitDirectory}$headPath")
         val branches = mutableListOf<String>()
         File("${this.gitDirectory}$branchPath").walk().filter { it.isFile }.forEach { branches.add(it.name) }
@@ -53,11 +97,10 @@ class GitObjectInflater {
         return File(path).readLines().first().split("/").last()
     }
 
-     private fun handleGitObjects() {
+     private fun handleUserInput() {
         println("Enter git object hash:")
         this.objectHash = readln()
         this.fileName = "$gitDirectory/$objectFolderName/${objectHash.substring(0, 2)}/${objectHash.substring(2, )}"
-        this.handleCatFile()
     }
 
     private fun getDateTime(epochTime: String, offset: String): String {
@@ -73,7 +116,12 @@ class GitObjectInflater {
         val file = File(fileName)
         val fis = FileInputStream(file)
         val iis = InflaterInputStream(fis)
-        return iis.readAllBytes()!!
+        val readBytes = iis.readAllBytes()!!
+
+        iis.close()
+        fis.close()
+
+        return readBytes
     }
     private fun handleCatFile() {
 

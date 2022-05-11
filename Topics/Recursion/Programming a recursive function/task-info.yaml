@@ -1,0 +1,14 @@
+type: code
+custom_name: Programming a recursive function.
+files:
+- name: src/Main.kt
+  visible: true
+  text: "fun f(n: Int): Int {\n    // your code here   \n}\n\nfun main() {\n    val\
+    \ n = readLine()!!.toInt()\n    print(f(n))\n}"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/13608#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: Tue, 10 May 2022 21:48:10 UTC
+record: -1
