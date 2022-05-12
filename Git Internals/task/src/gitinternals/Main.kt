@@ -18,6 +18,7 @@ class GitObjectInflater {
     lateinit var fileName: String
 
     companion object Property {
+        const val FILECODE = "100644"
         const val objectFolderName = "objects"
         const val branchPath = "/refs/heads"
         const val headPath = "/HEAD"
@@ -38,9 +39,40 @@ class GitObjectInflater {
             "log" -> {
                 handleLog()
             }
-
+            "commit-tree" -> handleTree()
         }
     }
+
+    private fun handleTree() {
+        println("Enter commit-hash:")
+        val commitHash = readln()
+        val hashPath = "$gitDirectory/$objectFolderName/${commitHash.substring(0, 2)}/${commitHash.substring(2, )}"
+        val gitByte = inflateBlob(hashPath)
+        val gitString = gitByte.toString(Charsets.UTF_8).replace('\u0000', '\n').split("\n").filter { it.isNotBlank() }
+        val treeHash = gitString.map { it.trim() }.groupBy { it.split(" ").first()}["tree"]?.first()?.split(" ")
+            ?.last()
+        if (treeHash != null) {
+            readTree(treeHash)
+        }
+    }
+
+    private fun readTree(treeHash: String, folder: String = "") {
+        val treeHashPath = "$gitDirectory/$objectFolderName/${treeHash.substring(0, 2)}/${treeHash.substring(2, )}"
+        val gitByte = inflateBlob(treeHashPath)
+        val lines = gitByte.map { Char(it.toUShort()) }.joinToString("").split(0.toChar())
+        var (number, name) = lines[1].split(" ")
+        var hash: String
+        for (i in 2 until lines.size - 1) {
+            hash = lines[i].substring(0, 20).map { it.code.toByte() }.joinToString("") { "%02x".format(it)}
+            val tmp = lines[i].substring(20).split(" ")
+            if (number == FILECODE) println("$folder$name") else readTree(hash,"$name/" )
+            number = tmp[0]
+            name = tmp[1]
+        }
+        hash = lines[lines.size - 1].map { it.code.toByte() }.joinToString("") { "%02x".format(it)}
+        if (number == FILECODE) println("$folder$name") else readTree(hash, "$name/" )
+    }
+
 
     private fun handleLog() {
         println("Enter branch name:")
@@ -49,8 +81,8 @@ class GitObjectInflater {
     }
 
     private fun getCommitMessage(hashValue: String, merged: Boolean = false) {
-        val parentHash: String? = hashValue
-        val hashPath = "$gitDirectory/$objectFolderName/${parentHash?.substring(0, 2)}/${parentHash?.substring(2, )}"
+        val parentHash: String = hashValue
+        val hashPath = "$gitDirectory/$objectFolderName/${parentHash.substring(0, 2)}/${parentHash.substring(2, )}"
         val gitByte = inflateBlob(hashPath)
         val gitString = gitByte.toString(Charsets.UTF_8).replace('\u0000', '\n').split("\n").filter { it.isNotBlank() }
         printCommitMessage(gitString, parentHash, merged)
@@ -156,19 +188,25 @@ class GitObjectInflater {
         }
 
     }
-    private fun printTreeData(gitString: String) {
+    private fun printTreeData(gitString: String, isCommitTree: Boolean = true) {
         val linesOfTree = gitString.split(0.toChar())
         var (number, name) = linesOfTree[1].split(" ")
         var hash: String
         for (i in 2 until linesOfTree.size - 1) {
             hash = linesOfTree[i].substring(0, 20).map { it.code.toByte() }.joinToString("") { "%02x".format(it)}
             val tmp = linesOfTree[i].substring(20).split(" ")
-            println("$number $hash $name")
+            if (isCommitTree)
+                println("$number $hash $name")
+            else
+                println(name)
             number = tmp[0]
             name = tmp[1]
         }
         hash = linesOfTree[linesOfTree.size - 1].map { it.code.toByte() }.joinToString("") { "%02x".format(it)}
-        println("$number $hash $name")
+        if (isCommitTree)
+            println("$number $hash $name")
+        else
+            println(name)
     }
 
     private fun printInfo(key: String, value: List<String>) {
