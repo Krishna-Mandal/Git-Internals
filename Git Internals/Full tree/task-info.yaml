@@ -530,6 +530,10 @@ files:
 - name: test/gittwo/HEAD
   visible: false
   learner_created: false
-feedback_link: https://hyperskill.org/projects/110/stages/601/implement#comment
-status: Unchecked
+feedback_link: https://hyperskill.org/learn/step/9843#comment
+status: Solved
+feedback:
+  message: Well done! You've finished the project. Select a new project on <a href="https://hyperskill.org/projects">JetBrains
+    Academy</a> to continue learning.
+  time: Thu, 12 May 2022 20:06:03 UTC
 record: -1

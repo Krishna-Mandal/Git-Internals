@@ -384,6 +384,9 @@ files:
 - name: test/gittwo/HEAD
   visible: false
   learner_created: false
-feedback_link: https://hyperskill.org/projects/110/stages/599/implement#comment
-status: Unchecked
-record: -1
+feedback_link: https://hyperskill.org/learn/step/9841#comment
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Tue, 10 May 2022 21:18:14 UTC
+record: 5

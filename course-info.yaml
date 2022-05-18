@@ -10,4 +10,5 @@ summary: Widely used in industry and education, Git is probably the most popular
 programming_language: Kotlin
 content:
 - Git Internals
+- Topics
 mode: Study
