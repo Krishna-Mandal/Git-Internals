@@ -20,6 +20,10 @@
             <option value="$PROJECT_DIR$/Git Internals/task/build/reports/tests" />
             <option value="$PROJECT_DIR$/Git Internals/task/build/test-results" />
             <option value="$PROJECT_DIR$/Git Internals/task/build/tmp" />
+            <option value="$PROJECT_DIR$/Topics/Asynchronous programming techniques   problems/Coroutines advantages" />
+            <option value="$PROJECT_DIR$/Topics/Asynchronous programming techniques   problems/Fix the coroutine call" />
+            <option value="$PROJECT_DIR$/Topics/Asynchronous programming techniques   problems/Theory" />
+            <option value="$PROJECT_DIR$/Topics/Asynchronous programming techniques   problems/What is callback" />
             <option value="$PROJECT_DIR$/Topics/For loop and ranges/Count the numbers" />
             <option value="$PROJECT_DIR$/Topics/For loop and ranges/Define a for-loop" />
             <option value="$PROJECT_DIR$/Topics/For loop and ranges/Fizz Buzz" />
@@ -28,6 +32,11 @@
             <option value="$PROJECT_DIR$/Topics/For loop and ranges/The roots of equation" />
             <option value="$PROJECT_DIR$/Topics/For loop and ranges/The sum of integers from a to b" />
             <option value="$PROJECT_DIR$/Topics/For loop and ranges/Theory" />
+            <option value="$PROJECT_DIR$/Topics/Introduction to Interfaces/Fixing an interface implementation" />
+            <option value="$PROJECT_DIR$/Topics/Introduction to Interfaces/Getting familar with implementing Interfaces" />
+            <option value="$PROJECT_DIR$/Topics/Introduction to Interfaces/Getting rid of copy-pasting  constructing an interface" />
+            <option value="$PROJECT_DIR$/Topics/Introduction to Interfaces/Let's look at few examples" />
+            <option value="$PROJECT_DIR$/Topics/Introduction to Interfaces/Theory" />
             <option value="$PROJECT_DIR$/Topics/Recursion/Programming a recursive function" />
             <option value="$PROJECT_DIR$/Topics/Recursion/Programming a recursive function  calculating the sum of numbers from 1 to n" />
             <option value="$PROJECT_DIR$/Topics/Recursion/Programming a recursive function  determining if the given number is prime" />

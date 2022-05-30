@@ -1,0 +1,32 @@
+<h2>Fixing an interface implementation</h2>
+<html>
+ <head></head>
+ <body>
+  <p>Following the topic of 2D simulations, imagine we have an interface of a simulated physical object, as well as an implementation of this interface in an instance of this object – in our case, a Stone.</p> 
+  <pre><code class="language-kotlin">data class Vector2(var x: Int, var y: Int)
+
+interface PhysicalBody2D {
+    val affectedByGravity: Boolean
+        get() = true
+    val simulated: Boolean
+        get() = true
+
+    val mass : Double
+    val gravityStrength : Double
+
+    val velocity : Vector2
+
+    // You don't need to implement these functions
+    fun simulate()
+    fun stopSimulation()
+    fun setVelocityToZero()
+}</code></pre> 
+  <p>However, the interface was not implemented properly. Correct the implementation, considering that the Stone</p> 
+  <p>1) Is supposed to have the mass of 0.25;</p> 
+  <p>2) Is supposed to have zero velocity;</p> 
+  <p>3) Is also supposed to be normally affected by gravity.</p>
+ </body>
+</html><br><br><font color="gray">Memory limit: 256 MB</font><br><font color="gray">Time limit: 8 seconds</font><br><br>
+<b>Caution</b><br><br>
+You may see errors in your code or execution results due to missing context. Don’t worry about it, just write the solution and press Check.
+<br><br>

@@ -1,0 +1,6 @@
+custom_name: Asynchronous programming techniques & problems
+content:
+- Theory
+- Coroutines advantages
+- What is callback
+- Fix the coroutine call

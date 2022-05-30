@@ -1,0 +1,57 @@
+type: code
+files:
+- name: src/Main.kt
+  visible: true
+  text: |-
+    // Do not change the code below.
+
+    data class Vector2(var x: Int, var y: Int)
+
+    interface PhysicalBody2D {
+        val affectedByGravity: Boolean
+            get() = true
+        val simulated: Boolean
+            get() = true
+
+        val mass: Double
+        val gravityStrength: Double
+
+        val velocity: Vector2
+
+        fun simulate()
+        fun stopSimulation()
+        fun setVelocityToZero()
+    }
+
+    // Do not change the code above.
+
+    /*
+        Physical body with a mass of 0.25,
+        Velocity of 0,
+        And no additional gravity strength
+    */
+    class Stone : PhysicalBody2D {
+        override val mass: Double
+            get() = 0.25
+
+        override val gravityStrength: Double
+            get() = 1
+
+        override val velocity: Vector2
+
+        override fun simulate() {
+            // Some code, which you don't need to implement
+        }
+
+        override fun stopSimulation() {
+            // Some code, which you don't need to implement
+        }
+        // Write any lacking code here.
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/18230#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: Thu, 12 May 2022 21:00:05 UTC
+record: -1

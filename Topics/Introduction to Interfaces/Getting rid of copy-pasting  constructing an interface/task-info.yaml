@@ -1,0 +1,16 @@
+type: code
+custom_name: 'Getting rid of copy-pasting: constructing an interface'
+files:
+- name: src/Main.kt
+  visible: true
+  text: |-
+    interface Shape {
+        // Your code here
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/18228#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: Thu, 12 May 2022 20:49:59 UTC
+record: -1

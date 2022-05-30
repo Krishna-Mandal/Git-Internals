@@ -1,0 +1,79 @@
+<h2>Let's look at few examples.</h2>
+<html>
+ <head></head>
+ <body>
+  <p>Which of these are correct implementations of the given interface?</p> 
+  <pre><code class="language-kotlin">interface Animal {
+    val numberOfLimbs: Int
+    fun move()
+    fun communicate()
+}</code></pre> 
+  <p> </p> 
+  <ol> 
+   <li> <pre><code class="language-kotlin">fun run() {}
+fun sayMeow() {}
+
+class Cat : Animal {
+    override val numberOfLimbs: Int = 4
+
+    override fun move() {
+        run()
+    }
+    override fun communicate() {
+        sayMeow()
+    }
+}</code></pre> </li> 
+   <li> <pre><code class="language-kotlin">class Dog : Animal {
+    override val numberOfLimbs: Int = 4
+
+    override fun move() {
+        run()
+    }
+}</code></pre> </li> 
+   <li> <pre><code class="language-kotlin">fun howl(){}
+
+class Wolf : Animal {
+    override fun move() {
+        run()
+    }
+    override fun communicate() {
+        howl()
+    }
+}</code></pre> </li> 
+   <li> <pre><code class="language-kotlin">fun catchPrey(){}
+
+class Bear : Animal {
+    override val numberOfLimbs: Int = 4
+
+    override fun move() {
+        run()
+    }
+    override fun communicate() {
+        howl()
+    }
+
+    override fun eat()
+    {
+        catchPrey()
+    }
+}</code></pre> </li> 
+   <li> <pre><code class="language-kotlin">fun burrow(){}
+
+class Fox : Animal {
+    override val numberOfLimbs: Int = 4
+
+    override fun move() {
+        run()
+    }
+    override fun communicate() {
+        howl()
+    }
+
+    fun digShelter()
+    {
+        burrow()
+    }
+}</code></pre> <p> </p> </li> 
+  </ol>
+ </body>
+</html>
